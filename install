@@ -1,0 +1,19 @@
+#!/bin/bash
+
+J2F_SH="$HOME/.j2f.sh"
+
+echo "📦 Installing j2f..."
+
+cp j2f.sh "$J2F_SH"
+
+if ! grep -q 'source ~/.j2f.sh' ~/.bashrc 2>/dev/null; then
+    echo 'source ~/.j2f.sh' >> ~/.bashrc
+    echo "✅ Added to ~/.bashrc"
+fi
+
+if [ -f ~/.zshrc ] && ! grep -q 'source ~/.j2f.sh' ~/.zshrc; then
+    echo 'source ~/.j2f.sh' >> ~/.zshrc
+    echo "✅ Added to ~/.zshrc"
+fi
+
+echo "✅ j2f installed. Restart your shell or run: source ~/.j2f.sh"
