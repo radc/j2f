@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "🧹 Uninstalling j2f..."
+
+# Remove function file
+if [ -f "$HOME/.j2f.sh" ]; then
+    rm "$HOME/.j2f.sh"
+    echo "✅ Removed: ~/.j2f.sh"
+fi
+
+# Remove data directory
+if [ -d "$HOME/.j2f" ]; then
+    rm -rf "$HOME/.j2f"
+    echo "✅ Removed: ~/.j2f"
+fi
+
+# Remove source line from shell configs
+if [ -f "$HOME/.bashrc" ]; then
+    sed -i '/source ~/.j2f.sh/d' "$HOME/.bashrc"
+    echo "✅ Removed j2f from .bashrc"
+fi
+
+if [ -f "$HOME/.zshrc" ]; then
+    sed -i '/source ~/.j2f.sh/d' "$HOME/.zshrc"
+    echo "✅ Removed j2f from .zshrc"
+fi
+
+echo "👋 j2f has been uninstalled."

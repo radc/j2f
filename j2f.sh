@@ -8,6 +8,18 @@ j2f() {
     local cmd="$1"
     shift
 
+    # If the user typed: j2f <shortcut>, treat it as "go to"
+    if [[ "$cmd" != "add" && "$cmd" != "remove" && "$cmd" != "list" && -n "$cmd" ]]; then
+        local path
+        path=$(grep "^$cmd|" "$DB_FILE" | cut -d'|' -f2-)
+        if [ -z "$path" ]; then
+            echo "[!] Shortcut '$cmd' not found"
+            return 1
+        fi
+        cd "$path" || return 1
+        return
+    fi
+
     case "$cmd" in
         add)
             local name="$1"
@@ -19,20 +31,6 @@ j2f() {
             grep -v "^$name|" "$DB_FILE" > "$DB_FILE.tmp" && mv "$DB_FILE.tmp" "$DB_FILE"
             echo "$name|$path" >> "$DB_FILE"
             echo "[✔] Shortcut '$name' added -> $path"
-            ;;
-        go)
-            local name="$1"
-            if [ -z "$name" ]; then
-                echo "Usage: j2f go <name>"
-                return 1
-            fi
-            local path
-            path=$(grep "^$name|" "$DB_FILE" | cut -d'|' -f2-)
-            if [ -z "$path" ]; then
-                echo "[!] Shortcut '$name' not found"
-                return 1
-            fi
-            cd "$path" || return 1
             ;;
         list)
             echo "📁 Saved shortcuts:"
@@ -49,8 +47,8 @@ j2f() {
             ;;
         *)
             echo "Usage:"
+            echo "  j2f <name>              Jump to folder for shortcut"
             echo "  j2f add <name> [path]   Add shortcut to path (default: current dir)"
-            echo "  j2f go <name>           Change directory to saved shortcut"
             echo "  j2f list                List saved shortcuts"
             echo "  j2f remove <name>       Remove a shortcut"
             ;;
