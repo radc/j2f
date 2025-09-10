@@ -9,7 +9,7 @@ No dependencies. No wrappers. Just native shell power that actually runs `cd` in
 ## 🔧 Installation
 
 ```bash
-git clone https://github.com/yourusername/j2f.git
+git clone https://github.com/radc/j2f.git
 cd j2f
 ./install
 source ~/.j2f.sh
